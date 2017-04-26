@@ -1,21 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Neightborhood Map</title>
+        <link rel="stylesheet" href="css/style.css">
+        <script type='text/javascript' src='js/knockout-3.4.2.js'></script>
+        <script src="js/jquery-3.2.1.min.js"></script>
+        <script src="js/main.js"></script>
+        <script async defer src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDRoN8aF3YgIXynvHbKUEh16CQkLBX5SVY&callback=initMap"></script>
+    </head>
+    <body>
+        <div class="topnav" onclick="openNav()">open</div>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Neightborhood Map</title>
-    
-    <script type='text/javascript' src='js/knockout-3.4.2.js'></script>
-    <script src="js/main.js"></script>
-</head>
-
-<body>
-    
-<p>First name: <strong data-bind="text: firstName"></strong></p>
-<p>Last name: <strong data-bind="text: lastName"></strong></p>
-
-<p>First name: <input data-bind="value: firstName" /></p>
-<p>Last name: <input data-bind="value: lastName" /></p>
-</body>
-
-</html
+        <div id="mySidenav" class="sidenav">
+            <form id="form-container" class="form-container" onsubmit="return loadData()">
+                <input type="text" id="street" placeholder="Station location" value="">
+                <button id="submit-btn">filter</button>
+            </form>
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            
+            <div class="keyLocations">test</div>
+        </div>
+        
+        <div id="map"></div>
+    </body>
+</html>

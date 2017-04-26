@@ -1,0 +1,53 @@
+* {box-sizing:border-box;}
+
+#map {
+    height: 100%;
+    margin-top: 40px;
+}
+
+html, body {
+    height: 80%;
+    margin: 0;
+    padding: 0;
+  }
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden; 
+    padding-top: 60px;
+    transition: 0.5s;
+}
+
+.closebtn {
+    color: white;
+    text-decoration: none;
+}
+
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.keyLocations, .form-container {
+    color: white;
+}
+
+.topnav {
+    position: fixed;
+    top: 0; 
+    width: 100%;
+    left: 10px;
+}

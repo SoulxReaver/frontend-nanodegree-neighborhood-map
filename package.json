@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "browser-sync": "^2.18.8",
     "gulp": "^3.9.1",
+    "gulp-uglify": "^2.1.2",
     "knockout": "^3.4.2"
   },
   "devDependencies": {},

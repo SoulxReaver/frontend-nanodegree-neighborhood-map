@@ -1,0 +1,1 @@
+function loadData(){var t=($("body"),$("#wikipedia-links")),e=($("#nytimes-header"),$("#nytimes-articles"));$("#greeting");return t.text(""),e.text(""),console.log("street",$("#street")),!1}$("#form-container").submit(loadData);
