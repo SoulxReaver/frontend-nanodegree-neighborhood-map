@@ -1,3 +1,31 @@
+var locations = [
+	{
+		name: 'Seattle Public Library-Central Library',
+		lat: 47.6067006,
+		long: -122.3346896
+	},
+	{
+		name: 'Benaroya Hall',
+		lat: 47.6080842,
+		long: -122.339159
+	},
+	{
+		name: 'Town Hall Seattle',
+		lat: 47.6090662,
+		long: -122.3323566
+	},
+	{
+		name: 'Columbia Center',
+		lat: 47.6043696,
+		long: -122.332687
+	},
+	{
+		name: 'Metropolitan Grill',
+		lat: 47.3595322,
+		long: -123.4806067
+	}
+
+];
 
 function loadData() {
 
@@ -20,7 +48,17 @@ function loadData() {
 
 $('#form-container').submit(loadData);
 
+function setupList() {
+    
+    var keylocationCollection = $('.keyLocations')
+    locations.forEach(function (loc) {
+        keylocationCollection.append('<div>' + loc.name +'</div>')
+    })
+}
+
 function initMap() {
+    ko.applyBindings(new AppViewModel());
+    setupList();
     var uluru = {lat: 47.8104922, lng: -122.248259};
     var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 8,
@@ -34,12 +72,13 @@ var marker = new google.maps.Marker({
   });
 }
 
-/* Set the width of the side navigation to 250px */
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
 }
 
-/* Set the width of the side navigation to 0 */
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
+}
+
+function AppViewModel() {
 }
