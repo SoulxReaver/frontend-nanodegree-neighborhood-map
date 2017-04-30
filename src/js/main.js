@@ -2,51 +2,39 @@ var locations = [
 	{
 		name: 'Seattle Public Library-Central Library',
 		lat: 47.6067006,
-		long: -122.3346896
+		lng: -122.3325009,
+        visible: true
 	},
 	{
-		name: 'Benaroya Hall',
-		lat: 47.6080842,
-		long: -122.339159
+		name: 'Tacoma Done',
+		lat: 47.2366694,
+		lng: -122.4270299,
+        visible: true
 	},
 	{
-		name: 'Town Hall Seattle',
-		lat: 47.6090662,
-		long: -122.3323566
+		name: 'Microsoft Corporation',
+		lat: 47.5556769,
+		lng: -122.0495224,
+        visible: true
 	},
 	{
-		name: 'Columbia Center',
-		lat: 47.6043696,
-		long: -122.332687
+		name: 'Mount Rainier National Park',
+		lat: 46.8799663,
+		lng: -121.7269094,
+        visible: true
 	},
 	{
-		name: 'Metropolitan Grill',
-		lat: 47.3595322,
-		long: -123.4806067
+		name: 'Seattle Premium Outlets',
+		lat: 48.093531,
+		lng: -122.188311,
+        visible: true
 	}
 
 ];
 
-function loadData() {
-
-    var $body = $('body');
-    var $wikiElem = $('#wikipedia-links');
-    var $nytHeaderElem = $('#nytimes-header');
-    var $nytElem = $('#nytimes-articles');
-    var $greeting = $('#greeting');
-
-    // clear out old data before new request
-    $wikiElem.text("");
-    $nytElem.text("");
-
-    // load streetview
-    var url = 'http://maps.googleapis.com/maps/api/streetview?size=600x300&location=' + $('#street').val() + "," + $('#city').val()
-    $body.append('<img class="bgimg" ');
-    $('.bgimg').attr('src', url);
-    return false;
-};
-
-$('#form-container').submit(loadData);
+var locMarker = [];
+var searchStreet;
+var map;
 
 function setupList() {
     
@@ -56,20 +44,60 @@ function setupList() {
     })
 }
 
+function setupLocMarker() {
+    locMarker = [];
+    locations.forEach(function (loc) {
+        if (loc) {
+            locMarker.push(new google.maps.Marker({
+                position: loc,
+                map: map,
+                title: loc.name
+            }));
+        }
+        else {
+            loc.setMap(null);
+        }
+    });
+}
+function hideAndShowMarker() {
+    for (var i = 0; i < locMarker.length; i++) {
+        if(locations[i].visible) {
+            locMarker[i].setMap(map);
+        }
+        else {
+            locMarker[i].setMap(null);
+        }
+    }
+}
+
+function filterList() {
+    ko.computed( function() {
+		var filter = searchStreet().toLowerCase();
+		if (!filter) {
+			locations.forEach(function(locationItem){
+				locationItem.visible = true;
+			});
+		} else {
+			ko.utils.arrayFilter(locations, function(locationItem) {
+				var string = locationItem.name.toLowerCase();
+				var result = (string.search(filter) >= 0);
+				locationItem.visible = result;
+			});
+		}
+        hideAndShowMarker();
+	}, this);
+}
+
 function initMap() {
     ko.applyBindings(new AppViewModel());
     setupList();
-    var uluru = {lat: 47.8104922, lng: -122.248259};
-    var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 8,
-    center: uluru
-});
-
-var marker = new google.maps.Marker({
-    position: uluru,
-    map: map,
-    title: 'Hello World!'
-  });
+    var uluru = {lat: 47.8104922, lng: -122.248259}; //seattle
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 8,
+        center: uluru
+    });
+    
+    setupLocMarker(filterList());
 }
 
 function openNav() {
@@ -81,4 +109,7 @@ function closeNav() {
 }
 
 function AppViewModel() {
+    
+    searchStreet = ko.observable("");
+
 }

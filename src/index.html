@@ -15,8 +15,7 @@
 
         <div id="mySidenav" class="sidenav">
             <form id="form-container" class="form-container" onsubmit="return loadData()">
-                <input type="text" id="street" placeholder="Station location" value="">
-                <button id="submit-btn">filter</button>
+                <input type="text" id="street" placeholder="location" data-bind="textInput: searchStreet">
             </form>
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             
