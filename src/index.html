@@ -8,7 +8,7 @@
         <script type='text/javascript' src='js/knockout-3.4.2.js'></script>
         <script src="js/jquery-3.2.1.min.js"></script>
         <script src="js/main.js"></script>
-        <script async defer src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDRoN8aF3YgIXynvHbKUEh16CQkLBX5SVY&callback=initMap"></script>
+        <script async defer src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDRoN8aF3YgIXynvHbKUEh16CQkLBX5SVY&callback=initMap" onerror="errorHandling()"></script>
     </head>
     <body>
         <div class="topnav" onclick="openNav()">open</div>
@@ -28,6 +28,6 @@
             </div>
         </div>
         
-        <div id="map"></div>
+        <div id="map">Error Loading Google Maps. Please Try Again.</div>
     </body>
 </html>

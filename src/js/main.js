@@ -47,6 +47,19 @@ function setupLocMarker() {
                 title: loc.name
             });
 
+            var contentString = 
+                '<div>' +
+                    '<h3>' + loc.name + '</h3>' +
+                    '<p>latitude: ' + loc.lat + '</p>' +
+                    '<p>longitude: ' + loc.lng + '</p>' +
+                '</div>';
+
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            marker.infowindow = infowindow;
+
             marker.addListener('click', toggleBounce);
             locMarker.push(marker);
         }
@@ -54,6 +67,8 @@ function setupLocMarker() {
             loc.setMap(null);
         }
     });
+
+
 }
 function locationsListClicked (place) {
     toggleBounce.call(place.marker);
@@ -64,6 +79,7 @@ function toggleBounce() {
           this.setAnimation(null);
     } else {
         this.setAnimation(google.maps.Animation.BOUNCE);
+        this.infowindow.open(map, this);
     }
 }
 
@@ -127,4 +143,12 @@ function AppViewModel() {
     searchStreet = ko.observable("");
     filteredLocations = ko.observableArray(filteredLocations);
 
+}
+
+function errorHandling() {
+	alert("Google Maps has failed to load. Please try again.");
+}
+
+function gm_authFailure() {
+    errorHandling();
 }
