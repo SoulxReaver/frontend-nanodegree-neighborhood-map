@@ -15,11 +15,17 @@
 
         <div id="mySidenav" class="sidenav">
             <form id="form-container" class="form-container" onsubmit="return loadData()">
-                <input type="text" id="street" placeholder="location" data-bind="textInput: searchStreet">
+                <div id="searchBox">
+                    <input type="text" id="street" placeholder="location" data-bind="textInput: searchStreet">
+                </div>
             </form>
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             
-            <div class="keyLocations"></div>
+            <div class="keyLocations" > 
+                <ul data-bind="foreach: filteredLocations">
+                    <li data-bind="text: name"></li>
+                </ul>
+            </div>
         </div>
         
         <div id="map"></div>

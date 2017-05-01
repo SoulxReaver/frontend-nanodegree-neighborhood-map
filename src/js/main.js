@@ -35,14 +35,7 @@ var locations = [
 var locMarker = [];
 var searchStreet;
 var map;
-
-function setupList() {
-    
-    var keylocationCollection = $('.keyLocations')
-    locations.forEach(function (loc) {
-        keylocationCollection.append('<div>' + loc.name +'</div>')
-    })
-}
+var filteredLocations = [];
 
 function setupLocMarker() {
     locMarker = [];
@@ -59,10 +52,13 @@ function setupLocMarker() {
         }
     });
 }
-function hideAndShowMarker() {
+function hideAndShowMarker() {    
+    
+    filteredLocations.removeAll();
     for (var i = 0; i < locMarker.length; i++) {
         if(locations[i].visible) {
             locMarker[i].setMap(map);
+            filteredLocations.push(locations[i]);
         }
         else {
             locMarker[i].setMap(null);
@@ -90,14 +86,15 @@ function filterList() {
 
 function initMap() {
     ko.applyBindings(new AppViewModel());
-    setupList();
+    
     var uluru = {lat: 47.8104922, lng: -122.248259}; //seattle
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 8,
         center: uluru
     });
     
-    setupLocMarker(filterList());
+    setupLocMarker();
+    filterList();
 }
 
 function openNav() {
@@ -111,5 +108,6 @@ function closeNav() {
 function AppViewModel() {
     
     searchStreet = ko.observable("");
+    filteredLocations = ko.observableArray(filteredLocations);
 
 }

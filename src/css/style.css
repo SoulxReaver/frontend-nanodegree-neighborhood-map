@@ -45,6 +45,13 @@ html, body {
     color: white;
 }
 
+#searchBox {
+    padding-left: 20px;
+}
+
+.keyLocations ul {
+    list-style: none;
+}
 .topnav {
     position: fixed;
     top: 0; 
