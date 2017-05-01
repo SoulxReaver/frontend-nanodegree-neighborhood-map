@@ -23,7 +23,7 @@
             
             <div class="keyLocations" > 
                 <ul data-bind="foreach: filteredLocations">
-                    <li data-bind="text: name"></li>
+                    <li data-bind="text: name, click: locationsListClicked"></li>
                 </ul>
             </div>
         </div>

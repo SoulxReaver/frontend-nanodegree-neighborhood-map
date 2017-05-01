@@ -41,23 +41,40 @@ function setupLocMarker() {
     locMarker = [];
     locations.forEach(function (loc) {
         if (loc) {
-            locMarker.push(new google.maps.Marker({
+            var marker = new google.maps.Marker({
                 position: loc,
                 map: map,
                 title: loc.name
-            }));
+            });
+
+            marker.addListener('click', toggleBounce);
+            locMarker.push(marker);
         }
         else {
             loc.setMap(null);
         }
     });
 }
+function locationsListClicked (place) {
+    toggleBounce.call(place.marker);
+}
+
+function toggleBounce() {
+    if (this.getAnimation() !== null) {
+          this.setAnimation(null);
+    } else {
+        this.setAnimation(google.maps.Animation.BOUNCE);
+    }
+}
+
 function hideAndShowMarker() {    
     
     filteredLocations.removeAll();
     for (var i = 0; i < locMarker.length; i++) {
         if(locations[i].visible) {
             locMarker[i].setMap(map);
+            locations[i].marker = locMarker[i];
+
             filteredLocations.push(locations[i]);
         }
         else {
@@ -86,7 +103,7 @@ function filterList() {
 
 function initMap() {
     ko.applyBindings(new AppViewModel());
-    
+
     var uluru = {lat: 47.8104922, lng: -122.248259}; //seattle
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 8,
