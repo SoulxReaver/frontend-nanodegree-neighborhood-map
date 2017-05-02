@@ -22,8 +22,8 @@
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             
             <div class="keyLocations" > 
-                <ul data-bind="foreach: filteredLocations">
-                    <li data-bind="text: name, click: locationsListClicked"></li>
+                <ul data-bind="foreach: displayLocations">
+                    <li data-bind="text: name, click: locationsListClicked, visible: visible"></li>
                 </ul>
             </div>
         </div>
