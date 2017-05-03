@@ -41,7 +41,6 @@ var clientSecret = 'U52N3NALZIHQSKJVA3NFXZTTUKZLCHA0JAUW5KNSE2OSAD5X';
 var locMarker = [];
 var searchStreet;
 var map;
-var filteredLocations = [];
 
 function initMap() {
     ko.applyBindings(new AppViewModel());
@@ -58,6 +57,37 @@ function initMap() {
 function AppViewModel() {
     searchStreet = ko.observable("");
     displayLocations = ko.observableArray();
+}
+
+function filterList() {
+    ko.computed( function() {
+		var filter = searchStreet().toLowerCase();
+		if (!filter) {
+            for (var i = 0; i < locations.length; i++) {
+                locations[i].visible = true;
+            }
+		} else {
+			ko.utils.arrayFilter(locations, function(locationItem) {
+				var string = locationItem.name.toLowerCase();
+				var result = (string.search(filter) >= 0);
+				locationItem.visible = result;
+			});
+		}
+        hideAndShowMarker();
+	}, this);
+}
+
+function hideAndShowMarker() {
+    displayLocations.removeAll();
+    for (var i = 0; i < locMarker.length; i++) {
+        if(locations[i].visible) {
+            locMarker[i].setMap(map);
+        }
+        else {
+            locMarker[i].setMap(null);
+        }
+        displayLocations.push(locations[i]);
+    }
 }
 
 function setupLocMarker() {
@@ -106,43 +136,11 @@ function setupInfoWindow(loc, marker, index) {
         
         marker.setMap(map);
         loc.marker = marker;
-        filteredLocations[loc.index] = loc;
         locMarker[loc.index] = marker;
         displayLocations.push(loc);
     }).fail(function() {
         alert("There was an error with the Foursquare API call. Please Try again later.");
     });
-}
-
-function filterList() {
-    ko.computed( function() {
-		var filter = searchStreet().toLowerCase();
-		if (!filter) {
-            for (var i = 0; i < locations.length; i++) {
-                locations[i].visible = true;
-            }
-		} else {
-			ko.utils.arrayFilter(locations, function(locationItem) {
-				var string = locationItem.name.toLowerCase();
-				var result = (string.search(filter) >= 0);
-				locationItem.visible = result;
-			});
-		}
-        hideAndShowMarker();
-	}, this);
-}
-
-function hideAndShowMarker() {
-    displayLocations.removeAll();
-    for (var i = 0; i < locMarker.length; i++) {
-        if(locations[i].visible) {
-            locMarker[i].setMap(map);
-        }
-        else {
-            locMarker[i].setMap(null);
-        }
-        displayLocations.push(locations[i]);
-    }
 }
 
 function locationsListClicked (place) {
@@ -158,18 +156,22 @@ function toggleBounce() {
     }
 }
 
-function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-}
-
-function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-}
-
 function errorHandling() {
 	alert("Google Maps has failed to load. Please try again.");
 }
 
 function gm_authFailure() {
     errorHandling();
+}
+
+function errorHandling() {
+	alert("Google Maps has failed to load. Please try again.");
+}
+
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
 }
