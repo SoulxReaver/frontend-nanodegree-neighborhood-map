@@ -41,6 +41,7 @@ var clientSecret = 'U52N3NALZIHQSKJVA3NFXZTTUKZLCHA0JAUW5KNSE2OSAD5X';
 var locMarker = [];
 var searchStreet;
 var map;
+var activeMarker;
 
 function initMap() {
     ko.applyBindings(new AppViewModel());
@@ -80,12 +81,7 @@ function filterList() {
 function hideAndShowMarker() {
     displayLocations.removeAll();
     for (var i = 0; i < locMarker.length; i++) {
-        if(locations[i].visible) {
-            locMarker[i].setMap(map);
-        }
-        else {
-            locMarker[i].setMap(null);
-        }
+        locMarker[i].setVisible(locations[i].visible)
         displayLocations.push(locations[i]);
     }
 }
@@ -111,10 +107,10 @@ function setupInfoWindow(loc, marker, index) {
     var foursquareResult = {};
     $.getJSON(foursquareUrl).done(function(data) {
         var results = data.response.venues[0];
-        foursquareResult.url = results.url;
-        foursquareResult.street = results.location.formattedAddress[0];
-        foursquareResult.city = results.location.formattedAddress[1];
-        foursquareResult.phone = results.contact.phone;
+        foursquareResult.url = results.url || 'url not available';
+        foursquareResult.street = results.location.formattedAddress[0] || 'street not available';
+        foursquareResult.city = results.location.formattedAddress[1] || 'city not available';
+        foursquareResult.phone = results.contact.phone || 'phone not available';
         var contentString = 
         '<div>' +
             '<h3>' + loc.name + '</h3>' +
@@ -126,11 +122,11 @@ function setupInfoWindow(loc, marker, index) {
             '<div>longitude: ' + loc.lng + '</div>' +
         '</div>';
 
-        var infowindow = new google.maps.InfoWindow({
+        var infoWindow = new google.maps.InfoWindow({
             content: contentString
         });
 
-        marker.infowindow = infowindow;
+        marker.infoWindow = infoWindow;
 
         marker.addListener('click', toggleBounce);
         
@@ -148,19 +144,20 @@ function locationsListClicked (place) {
 }
 
 function toggleBounce() {
-    if (this.getAnimation() !== null) {
-          this.setAnimation(null);
-    } else {
-        this.setAnimation(google.maps.Animation.BOUNCE);
-        this.infowindow.open(map, this);
+    if(activeMarker) {
+        activeMarker.infoWindow.close();
+        activeMarker.setAnimation(null);
     }
+    this.setAnimation(google.maps.Animation.BOUNCE);
+    activeMarker = this;
+    this.infoWindow.open(map, this);
 }
 
 function errorHandling() {
 	alert("Google Maps has failed to load. Please try again.");
 }
 
-function gm_authFailure() {
+function gmAuthFailure() {
     errorHandling();
 }
 
